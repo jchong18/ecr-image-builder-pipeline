@@ -1,16 +1,15 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { ECRConstruct } from './constructs/ecr-construct';
+import { PipelineConstruct } from './constructs/pipeline-construct';
 
 export class EcrPipelineCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'EcrPipelineCdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const ecrConstruct = new ECRConstruct(this, 'Ecr');
+    const pipelineConstruct = new PipelineConstruct(this, 'Pipeline', {
+      ecrRepository: ecrConstruct.repository,
+    });
   }
 }
